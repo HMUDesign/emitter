@@ -1,6 +1,14 @@
 {
   "name": "emitter",
-  "version": "2.0.0-0",
+  "version": "2.0.0",
   "main": "emitter.jsx",
-  "dependencies": {}
+  "homepage": "https://github.com/HMUDesign/emitter",
+  "author": {
+    "name": "Christopher Baker",
+    "email": "christopher@hmudesign.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/HMUDesign/emitter.git"
+  }
 }
