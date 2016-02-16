@@ -4,48 +4,72 @@ export default class Emitter {
 	 *
 	 * @api public
 	 */
-	
+
 	constructor() {
 		this._emitters = {};
 		this._subscribers = [];
 	}
 	
+	extend(event) {
+		return new Emitter();
+	}
+
 	/**
 	 * Register a handler `fn`.
 	 */
-	
+
 	then(fn) {
-		this._subscribers.push(fn.bind(this));
+		this._subscribers.push(fn);
 		
 		return this;
 	}
-	
+
 	/**
 	 * Return an emitter for the given `event`.
 	 *
 	 * @param {String} event
+	 * @param {Mixed} ...
 	 * @return {Emitter}
 	 * @api public
 	 */
-	
+
 	on(...items) {
-		if(!items.length) {
+		if (!items.length) {
 			return this;
 		}
 		
-		var event = items.shift();
+		let event = items.shift();
 		
-		if(typeof event === 'function') {
+		if (typeof event === 'function') {
 			return this.then(event);
 		}
 		
-		if(!this._emitters[event]) {
-			this._emitters[event] = new Emitter();
+		if (items[0] instanceof Emitter) {
+			let emitter = this._emitters[event];
+			this._emitters[event] = items[0];
+			this._emitters[event].key = event;
+			
+			if (emitter) {
+				for (let key in emitter._emitters) {
+					this.on(event, key, emitter._emitters[key]);
+				}
+				
+				for (let fn of emitter._subscribers) {
+					this.on(event, fn);
+				}
+			}
+			
+			return this;
+		}
+		
+		if (!this._emitters[event]) {
+			this._emitters[event] = this.extend(event);
+			this._emitters[event].key = event;
 		}
 		
 		return this._emitters[event].on(...items);
 	}
-	
+
 	/**
 	 * Remove the emitters for `event` or all events.
 	 *
@@ -53,23 +77,24 @@ export default class Emitter {
 	 * @return {Emitter}
 	 * @api public
 	 */
-	
+
 	off(...items) {
-		if(!items.length) {
+		if (!items.length) {
 			this._emitters = {};
 			
 			return this;
 		}
 		
-		var event = items.shift();
+		let event = items.shift();
 		
-		if(!this._emitters[event]) {
-			this._emitters[event] = new Emitter();
+		if (!this._emitters[event]) {
+			this._emitters[event] = this.extend(event);
+			this._emitters[event].key = event;
 		}
 		
 		return this._emitters[event].off(...items);
 	}
-	
+
 	/**
 	 * Emit `event` with the given args.
 	 *
@@ -77,36 +102,16 @@ export default class Emitter {
 	 * @param {Mixed} ...
 	 * @return {Emitter}
 	 */
-	
-	*emit(...items) {
-		for (let value of this._subscribers) {
-			value = value.apply(this, items);
-			
-			if (value) {
-				yield value;
-			}
-		}
+
+	async emit(...items) {
+		await Promise.all(this._subscribers.map((subscriber) => {
+			return subscriber.apply(this, items);
+		}));
 		
-		var event = items.shift();
+		let event = items.shift();
 		
 		if (typeof event === 'string') {
-			var emitter = this._emitters[event];
-			
-			if (emitter) {
-				yield emitter.emit(...items);
-			}
+			await this.on(event).emit(...items);
 		}
-	}
-	
-	/**
-	 * Check if this emitter has `event` emitters.
-	 *
-	 * @param {String} event
-	 * @return {Boolean}
-	 * @api public
-	 */
-	
-	has(event) {
-		return !!this._emitters[event];
 	}
 }
