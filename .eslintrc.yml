@@ -1,0 +1,98 @@
+---
+root: true
+extends:
+  - eslint:recommended
+parser: babel-eslint
+parserOptions:
+  ecmaVersion: 6
+  sourceType: module
+  ecmaFeatures:
+    jsx: true
+env:
+  node: true
+  browser: true
+  es6: true
+  jest: true
+rules:
+  block-scoped-var: error
+  brace-style:
+    - error
+    - stroustrup
+  camelcase: off
+  consistent-return: error
+  curly:
+    - error
+    - all
+  comma-dangle:
+    - error
+    - always-multiline
+  dot-notation:
+    - error
+    -
+      allowKeywords: true
+  eqeqeq:
+    - error
+    - allow-null
+  space-before-blocks: error
+  strict: off
+  new-cap: error
+  no-bitwise: error
+  no-caller: error
+  no-case-declarations: off
+  no-cond-assign:
+    - error
+    - except-parens
+  no-debugger: error
+  no-empty: error
+  no-eval: error
+  no-extend-native: error
+  no-irregular-whitespace: error
+  no-iterator: error
+  no-loop-func: error
+  no-multi-str: error
+  no-new: error
+  no-proto: error
+  no-script-url: error
+  no-sequences: error
+  no-undef: error
+  no-unused-vars:
+    - error
+    - args: none
+  no-with: error
+  one-var:
+    - error
+    - never
+  indent:
+    - error
+    - tab
+    -
+      SwitchCase: 1
+  quotes:
+    - error
+    - single
+  semi:
+    - error
+    - always
+  valid-typeof: error
+  wrap-iife:
+    - error
+    - inside
+  array-bracket-spacing:
+    - error
+    - always
+    -
+      objectsInArrays: false
+      arraysInArrays: false
+
+  no-warning-comments: warn
+  no-console: warn
+
+  no-var: error
+  arrow-spacing: error
+  prefer-arrow-callback: error
+  prefer-const: error
+  prefer-rest-params: error
+  prefer-spread: error
+  prefer-template: error
+  rest-spread-spacing: error
+  template-curly-spacing: error
