@@ -1,6 +1,6 @@
 {
   "name": "@hmudesign/emitter",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "module": "emitter.js",
   "homepage": "https://github.com/HMUDesign/emitter",
   "author": {
