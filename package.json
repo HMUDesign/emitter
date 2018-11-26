@@ -19,7 +19,9 @@
     "release:major": "npm version major && npm publish"
   },
   "devDependencies": {
-    "babel-eslint": "^8.2.3",
-    "eslint": "^4.19.1"
+    "@babel/core": "7.1.0",
+    "babel-eslint": "9.0.0",
+    "babel-jest": "23.6.0",
+    "eslint": "5.6.0"
   }
 }
